@@ -1,0 +1,11 @@
+# KeyMint from the dizi vendor. Starts once qseecomd has registered its
+# listeners (QSEE needs them for the RPMB/SSD storage the keys live in).
+on property:hwservicemanager.ready=true && property:vendor.sys.listeners.registered=true
+    start keymint-qti
+
+service keymint-qti /system/bin/android.hardware.security.keymint-service-qti
+    user root
+    group root drmrpc
+    setenv LD_LIBRARY_PATH /vendor/lib64:/vendor/lib64/hw:/system/lib64
+    disabled
+    seclabel u:r:recovery:s0

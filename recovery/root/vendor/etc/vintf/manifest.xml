@@ -1,0 +1,15 @@
+<!--
+    Recovery device manifest for dizi. Only the HALs the recovery runs:
+    Gatekeeper 1.0 (HIDL) here; KeyMint, boot control and health come
+    from the fragments in manifest/. There is deliberately no Keymaster
+    4.x entry: dizi has KeyMint only, and a Keymaster entry makes
+    keystore2 (and with it the recovery) wait forever for a HAL that
+    never starts.
+-->
+<manifest version="2.0" type="device" target-level="7">
+    <hal format="hidl">
+        <name>android.hardware.gatekeeper</name>
+        <transport>hwbinder</transport>
+        <fqname>@1.0::IGatekeeper/default</fqname>
+    </hal>
+</manifest>

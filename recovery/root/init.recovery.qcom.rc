@@ -1,0 +1,37 @@
+#
+# Copyright (C) 2026 The OrangeFox Recovery Project
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+
+import /init.recovery.qcom_decrypt.rc
+
+on init
+    start boot-hal-1-2
+
+on fs
+    wait /dev/block/platform/soc/${ro.boot.bootdevice}
+    symlink /dev/block/platform/soc/${ro.boot.bootdevice} /dev/block/bootdevice
+    write /proc/sys/kernel/firmware_config/force_sysfs_fallback 1
+
+service unified-script /system/bin/unified-script.sh
+    user root
+    group root
+    disabled
+    oneshot
+    seclabel u:r:recovery:s0
+
+on boot
+    start unified-script
+    setprop sys.usb.config adb
+
+on property:twrp.modules.loaded=true
+    start touch_report
+
+    # The charger and fuel gauge live on the ADSP
+    mkdir /firmware
+    mount vfat /dev/block/bootdevice/by-name/modem${ro.boot.slot_suffix} /firmware ro
+    wait /sys/kernel/boot_adsp/boot
+    write /sys/kernel/boot_adsp/boot 1
+    wait /sys/class/power_supply/battery
+    umount /firmware

@@ -1,0 +1,34 @@
+#
+# Copyright (C) 2026 The OrangeFox Recovery Project
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+
+FDEVICE="dizi"
+
+if [ "$FOX_BUILD_DEVICE" = "$FDEVICE" ]; then
+	export FOX_VIRTUAL_AB_DEVICE=1
+	export FOX_VANILLA_BUILD=1
+	export FOX_ENABLE_APP_MANAGER=1
+	export FOX_RECOVERY_SYSTEM_PARTITION="/dev/block/mapper/system"
+	export FOX_RECOVERY_VENDOR_PARTITION="/dev/block/mapper/vendor"
+	export FOX_USE_BASH_SHELL=1
+	export FOX_ASH_IS_BASH=1
+	export FOX_USE_TAR_BINARY=1
+	export FOX_USE_LZ4_BINARY=1
+	export FOX_USE_SED_BINARY=1
+	export FOX_USE_XZ_UTILS=1
+	export FOX_USE_ZSTD_BINARY=1
+	export FOX_USE_NANO_EDITOR=1
+	export FOX_USE_DATE_BINARY=1
+	export FOX_USE_BUSYBOX_BINARY=1
+	export FOX_USE_PATCHELF_BINARY=1
+	export FOX_DELETE_AROMAFM=1
+	export FOX_SETTINGS_ROOT_DIRECTORY=/data/recovery
+	export FOX_MISCELLANEOUS_ROOT_DIRECTORY=/sdcard
+	export FOX_ALLOW_EARLY_SETTINGS_LOAD=1
+	export FOX_ENABLE_KERNELSU_SUPPORT=1
+	export FOX_ENABLE_KERNELSU_NEXT_SUPPORT=1
+	export FOX_ENABLE_SUKISU_SUPPORT=1
+	export FOX_MAINTAINER_PATCH_VERSION=1
+fi

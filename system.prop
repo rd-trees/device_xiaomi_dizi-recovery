@@ -1,0 +1,2 @@
+ro.charger.enable_suspend=1
+persist.sys.isUsbOtgEnabled=true
