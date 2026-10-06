@@ -25,6 +25,18 @@ on boot
     start unified-script
     setprop sys.usb.config adb
 
+# The dwc3 controller can miss the cable attach (see usb_attach.sh); check
+# again every time the gadget comes up with a new config.
+service usb-attach /system/bin/usb_attach.sh
+    user root
+    group root
+    disabled
+    oneshot
+    seclabel u:r:recovery:s0
+
+on property:sys.usb.state=*
+    restart usb-attach
+
 on property:twrp.modules.loaded=true
     start touch_report
 

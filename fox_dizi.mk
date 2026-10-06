@@ -6,8 +6,8 @@
 # OrangeFox build vars: https://wiki.orangefox.tech/dev/build_vars
 #
 
-# Screen: 1600x2560 scales to 1080x1728; no notch
-OF_SCREEN_H := 1728
+# Screen: 1600x2560 at 1:1 (theme/widen.py lays the theme out 1600 wide); no notch
+OF_SCREEN_H := 2560
 OF_STATUS_H := 80
 OF_STATUS_INDENT_LEFT := 48
 OF_STATUS_INDENT_RIGHT := 48

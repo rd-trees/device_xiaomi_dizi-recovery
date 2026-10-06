@@ -190,3 +190,7 @@ ifneq ($(wildcard bootable/recovery/installer/.),)
     USE_RECOVERY_INSTALLER := true
     RECOVERY_INSTALLER_PATH := bootable/recovery/installer
 endif
+
+# Theme: lay the 1080-wide portrait theme out 1600 wide at 1:1 instead of
+# scaling it up 1.48x (see theme/widen.py)
+BOARD_RECOVERY_IMAGE_PREPARE += python3 -I $(DEVICE_PATH)/theme/widen.py $(TARGET_RECOVERY_ROOT_OUT)/twres 1600;
