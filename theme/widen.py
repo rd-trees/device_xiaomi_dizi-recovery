@@ -13,7 +13,11 @@ Runs on the installed theme ($OUT/recovery/root/twres) from
 BOARD_RECOVERY_IMAGE_PREPARE. ui.xml doubles as the marker: once its
 resolution says the new width, the theme has already been converted.
 
-Usage: widen.py <twres dir> <new width>
+The splash pages carry their own <resolution> (one with an "h" typo for
+"height"), so they get the panel size explicitly, and their logo is scaled up
+to keep the size it had when the whole theme was scaled 1.48x.
+
+Usage: widen.py <twres dir> <new width> <screen height>
 """
 
 import re
@@ -87,9 +91,20 @@ def widen_placements(text: str, k: float) -> str:
     return re.sub(r"<(?:shape|image)\b[^>]*>", shape, text)
 
 
+def widen_splash(text: str, k: float, new_width: int, height: int) -> str:
+    """Give a splash page the panel resolution at 1:1 and keep its logo size."""
+    text = re.sub(r"<resolution\b[^>]*/>",
+                  f'<resolution width="{new_width}" height="{height}" resizing="1"/>', text)
+    text = re.sub(r'(<variable name="screen_width" value=")\d+', rf"\g<1>{new_width}", text)
+    text = re.sub(r'(<variable name="screen_height" value=")\d+', rf"\g<1>{height}", text)
+    return re.sub(r'(name="splash_logo"[^>]*\bscale=")([\d.]+)',
+                  lambda m: f"{m.group(1)}{float(m.group(2)) * k:.2f}", text)
+
+
 def main() -> None:
     twres = Path(sys.argv[1])
     new_width = int(sys.argv[2])
+    height = int(sys.argv[3])
     k = new_width / BASE_WIDTH
 
     ui = twres / "ui.xml"
@@ -108,6 +123,8 @@ def main() -> None:
         new = widen_placements(text, k)
         if xml.name == "vars.xml":
             new = widen_vars(new, k, new_width, x_vars, w_vars)
+        elif xml.name.startswith("splash"):
+            new = widen_splash(new, k, new_width, height)
         if new != text:
             xml.write_text(new, errors="surrogateescape")
 
