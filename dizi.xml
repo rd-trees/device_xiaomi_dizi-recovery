@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Local manifest for the OrangeFox fox_16.0 Manifest: adds the dizi device tree. -->
+<manifest>
+    <remote name="rd-trees" fetch="https://github.com/rd-trees" />
+    <project path="device/xiaomi/dizi" name="device_xiaomi_dizi-recovery" remote="rd-trees" revision="fox_16.0" />
+</manifest>
